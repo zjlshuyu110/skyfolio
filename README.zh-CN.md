@@ -8,7 +8,7 @@
 
 [English](README.md) · **简体中文**
 
-[体验 Demo](#体验-demo) · [开始使用](#开始使用) · [发布演示](#发布演示)
+[在线 Demo](https://zjlshuyu110.github.io/skyfolio/demo/?lang=zh-CN) · [开始使用](#开始使用) · [发布演示](#发布演示)
 
 </div>
 
@@ -43,7 +43,7 @@ python -m http.server 8766 --bind 127.0.0.1 --directory docs
 
 打开 **http://127.0.0.1:8766/demo/**。右上角切换语言，或在网址后添加 `?lang=zh-CN` / `?lang=en`。请通过本地服务访问，不要直接双击 HTML 文件。
 
-**目前尚未发布在线 Demo**；`docs/` 中的静态文件已准备好供部署。
+**[打开在线 Demo](https://zjlshuyu110.github.io/skyfolio/demo/?lang=zh-CN)**，通过 GitHub Pages 部署 `docs/` 中的静态演示。
 
 ## 开始使用
 
@@ -92,7 +92,7 @@ Windows 用户也可修改 `outputs/flight-journal/config.json` 中的 `workbook
 3. 在 **Settings → Pages → Build and deployment** 选择 **Deploy from a branch**，选择发布分支及 **/docs**，保存。
 4. GitHub 给出网址后，将其补到仓库 About 和两份 README 中。
 
-步骤依据 [GitHub 官方发布来源说明](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)。Pages 运行静态演示，读取 Excel 的服务继续在本机运行。这些准备不会自动发布项目。
+步骤依据 [GitHub 官方发布来源说明](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)。Pages 运行静态演示，读取 Excel 的服务继续在本机运行。本仓库已配置从 `main` 分支的 `/docs` 目录发布演示。
 
 ## 目录与私人资料
 
@@ -123,4 +123,5 @@ python -m unittest discover -s tests -v
 [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/) 提供公共领域地图；[airportsdata](https://github.com/mborsetti/airportsdata) 提供机场与时区，附带 [MIT 许可](outputs/flight-journal/web/data/airports-LICENSE.txt)；[OurAirports](https://ourairports.com/data/) 提供历史机场补充数据。
 
 第三方数据保留各自许可；项目原创代码的开源许可证尚未选定。
+
 

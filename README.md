@@ -8,7 +8,7 @@ An interactive flight journal powered by your local Excel workbook.
 
 **English** · [简体中文](README.zh-CN.md)
 
-[Try the demo](#try-the-demo) · [Quick start](#quick-start) · [Publish the demo](#publish-the-demo)
+[Live demo](https://zjlshuyu110.github.io/skyfolio/demo/?lang=en) · [Quick start](#quick-start) · [Publish the demo](#publish-the-demo)
 
 </div>
 
@@ -43,7 +43,7 @@ python -m http.server 8766 --bind 127.0.0.1 --directory docs
 
 Open **http://127.0.0.1:8766/demo/**. Use the language button, or add `?lang=en` / `?lang=zh-CN` to the URL. Serve the folder over HTTP rather than opening the HTML file directly.
 
-**No hosted demo URL exists yet.** The static files are ready for hosting in `docs/`.
+**[Open the live demo](https://zjlshuyu110.github.io/skyfolio/demo/?lang=en)** — hosted on GitHub Pages from `docs/`.
 
 ## Quick start
 
@@ -92,7 +92,7 @@ Invalid departure dates are skipped with a notice. Incomplete times omit duratio
 3. In **Settings → Pages → Build and deployment**, choose **Deploy from a branch**, your publishing branch, and **/docs**. Save.
 4. Add the resulting URL to the repository's About section and both READMEs.
 
-See [GitHub's publishing-source guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). Pages serves the static preview; the Python Excel service stays local. Preparing this project does not publish it.
+See [GitHub's publishing-source guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). Pages serves the static preview; the Python Excel service stays local. This repository publishes its demo from the `main` branch, `/docs` folder.
 
 ## Structure & privacy
 
@@ -123,4 +123,5 @@ Distance is estimated between airports, not along the flown track. Duration uses
 [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/) supplies the public-domain map. [airportsdata](https://github.com/mborsetti/airportsdata) supplies airports/time zones under its [MIT license](outputs/flight-journal/web/data/airports-LICENSE.txt). [OurAirports](https://ourairports.com/data/) supplies historical airport supplements.
 
 Third-party data retains its own licensing. A license for the project's original code has not yet been selected.
+
 
