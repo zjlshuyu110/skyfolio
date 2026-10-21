@@ -25,7 +25,7 @@ class DemoTests(unittest.TestCase):
         self.assertTrue(all(f['excluded'] and not f['flown'] for f in data['canceled']))
 
     def test_build_is_current_and_self_contained(self):
-        expected={'index.html','app.js','i18n.js','styles.css','icon.svg','GUIDE.html','data/demo.json','data/world.json','data/airports-LICENSE.txt'}
+        expected={'index.html','app.js','i18n.js','styles.css','icon.svg','GUIDE.html','guide.js','data/demo.json','data/world.json','data/airports-LICENSE.txt'}
         actual={p.relative_to(DEMO).as_posix() for p in DEMO.rglob('*') if p.is_file()}
         self.assertEqual(actual,expected)
         for name in expected-{'index.html'}:
@@ -42,7 +42,7 @@ class DemoTests(unittest.TestCase):
             text=(ROOT/name).read_text(encoding='utf-8')
             for link in re.findall(r'\]\(([^)]+)\)',text):
                 if not link.startswith(('http:','https:','#')):
-                    self.assertTrue((ROOT/link).exists(),f'{name}: {link}')
+                    self.assertTrue((ROOT/link.split('#', 1)[0]).exists(),f'{name}: {link}')
 
 if __name__=='__main__':
     unittest.main()

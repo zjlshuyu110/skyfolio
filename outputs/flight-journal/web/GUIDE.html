@@ -1,6 +1,19 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Flight Journal · Demo guide / 演示说明</title><link rel="stylesheet" href="./styles.css">
-<main style="max-width:800px;margin:50px auto;padding:32px"><a class="button" href="./index.html?demo=1">← Back to demo / 返回演示</a><h1 style="margin-top:30px">Flight Journal / 航迹</h1>
-<p style="margin:24px 0;line-height:2">This demo uses 20 fictional flights and 2 canceled examples. Explore the map, select a route, search flights and switch between English and Chinese. No workbook, email account or personal travel data is accessed.</p>
-<p style="margin:24px 0;line-height:2">演示包含 20 段虚构航班和 2 条取消示例，可探索地图、点击航线、搜索航班并切换中英文。演示不会读取 Excel、邮箱或个人行程。</p>
-<h2>Your own workbook / 使用自己的 Excel</h2><p style="margin:24px 0;line-height:2">Download the source, install Python 3.10+, run <code>python -m pip install -r requirements.txt</code>, configure your workbook in <code>outputs/flight-journal/config.json</code>, and run <code>python outputs/flight-journal/app.py</code>. Open <code>http://127.0.0.1:8765</code>. See the README for the workbook format.</p>
-<p style="margin:24px 0;line-height:2">下载源码并安装依赖后，配置 Excel 路径即可本机运行，Windows 可双击启动文件。保存 Excel 后约 3 秒自动更新，完整步骤见中文 README。</p></main></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Skyfolio · Demo guide</title><link rel="stylesheet" href="./styles.css"><script src="./guide.js" defer></script></head>
+<body><main style="max-width:800px;margin:50px auto;padding:32px;line-height:1.8">
+<section data-language="en"><a class="button" href="./index.html?demo=1&amp;lang=en">← Back to demo</a>
+<h1 style="margin-top:30px">About this demo</h1>
+<p>The demo contains 20 fictional flights and 2 canceled examples. You can browse the map, select routes and search flights. It does not access your workbook or email.</p>
+<h2>Use your own workbook</h2><p>Download the source and install Python 3.10 or later. From the project folder, run:</p>
+<pre>python -m pip install -r requirements.txt
+python outputs/flight-journal/app.py --workbook "/path/to/flights.xlsx"</pre>
+<p>Open <code>http://127.0.0.1:8765/?lang=en</code>. The app checks for saved workbook changes every 3 seconds.</p>
+<p>Use English sheet names such as <code>Flights</code> and columns such as <code>Departure date</code>, <code>Origin</code> and <code>Destination</code>. See the <a href="https://github.com/zjlshuyu110/skyfolio#workbook-format">README</a> for the full format.</p></section>
+<section data-language="zh-CN" hidden><a class="button" href="./index.html?demo=1&amp;lang=zh-CN">← 返回演示</a>
+<h1 style="margin-top:30px">演示说明</h1><p>包含 20 段虚构航班和 2 条取消示例，可查看地图、选择航线和搜索航班。演示不会读取你的 Excel 或邮箱。</p>
+<h2>使用自己的 Excel</h2><p>下载源码并安装 Python 3.10 或更新版本，在项目目录运行：</p>
+<pre>python -m pip install -r requirements.txt
+python outputs/flight-journal/app.py --workbook "/path/to/flights.xlsx"</pre>
+<p>打开 <code>http://127.0.0.1:8765/?lang=zh-CN</code>。保存 Excel 后，界面会在约 3 秒内更新。</p>
+<p>支持中英文表格，格式见 <a href="https://github.com/zjlshuyu110/skyfolio/blob/main/README.zh-CN.md">中文 README</a>。</p></section>
+</main></body></html>

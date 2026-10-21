@@ -4,7 +4,7 @@ import shutil
 ROOT=Path(__file__).resolve().parents[1]
 WEB=ROOT/'outputs/flight-journal/web'
 OUT=ROOT/'docs/demo'
-PUBLIC=['index.html','app.js','i18n.js','styles.css','icon.svg','GUIDE.html','data/world.json','data/demo.json','data/airports-LICENSE.txt']
+PUBLIC=['index.html','app.js','i18n.js','styles.css','icon.svg','GUIDE.html','guide.js','data/world.json','data/demo.json','data/airports-LICENSE.txt']
 for relative in PUBLIC:
     target=OUT/relative
     target.parent.mkdir(parents=True,exist_ok=True)

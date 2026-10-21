@@ -26,7 +26,10 @@ AIRPORTS = json.loads((WEB / "data" / "airports.json").read_text(encoding="utf-8
 AIRPORTS.update(json.loads((WEB / "data" / "historical-airports.json").read_text(encoding="utf-8")))
 HEADERS = ["起飞日期", "航班号", "出发机场", "到达机场", "起飞时间", "到达日期", "到达时间", "航空公司", "订单/预订号", "凭证状态", "乘坐/导入判定", "备注", "来源邮箱", "邮件日期", "原邮件链接", "补充来源链接"]
 FIELDS = ["date", "number", "originLabel", "destinationLabel", "departure", "arrivalDate", "arrival", "airline", "booking", "evidence", "status", "notes", "mailbox", "mailDate", "source", "extraSources"]
-FLOWN = {"已乘坐", "推定已乘坐", "已导入"}
+EN_HEADERS = ["Departure date", "Flight number", "Origin", "Destination", "Departure time", "Arrival date", "Arrival time", "Airline", "Booking reference", "Evidence", "Status", "Notes", "Source mailbox", "Email date", "Source URL", "Additional URLs"]
+HEADER_FIELDS = {header.casefold(): field for headers in (HEADERS, EN_HEADERS) for header, field in zip(headers, FIELDS)}
+SHEETS = {"flights": ("Flights", "航班记录"), "canceled": ("Canceled", "取消及旧票"), "clues": ("Research notes", "待补充线索")}
+FLOWN = {"已乘坐", "推定已乘坐", "已导入", "flown", "inferred flown", "imported"}
 
 
 def clean(value):
@@ -101,9 +104,11 @@ def read_flights(sheet, warnings):
     columns = None
     header_row = 0
     for index, values in enumerate(rows, 1):
-        labels = [clean(v) for v in values]
-        if all(h in labels for h in ("起飞日期", "出发机场", "到达机场")):
-            columns = {field: labels.index(header) if header in labels else None for field, header in zip(FIELDS, HEADERS)}
+        labels = [HEADER_FIELDS.get(clean(v).casefold()) for v in values]
+        if all(h in labels for h in ("date", "originLabel", "destinationLabel")):
+            if len([v for v in labels if v]) != len({v for v in labels if v}):
+                raise ValueError(f'Duplicate columns in sheet: {sheet.title}')
+            columns = {field: labels.index(field) if field in labels else None for field in FIELDS}
             header_row = index
             break
         if index >= 20:
@@ -141,9 +146,10 @@ def read_flights(sheet, warnings):
         source_airport, dest_airport = AIRPORTS.get(item["origin"]), AIRPORTS.get(item["destination"])
         item["distance"] = distance_km(source_airport, dest_airport)
         item["duration"] = duration_minutes(item, source_airport, dest_airport)
-        item["inferred"] = "推定" in item["evidence"] or item["status"] == "推定已乘坐"
-        item["flown"] = sheet.title == "航班记录" and item["status"] in FLOWN
-        item["excluded"] = sheet.title == "取消及旧票" or item["status"] in {"不导入", "未乘坐", "暂不导入"}
+        status = item["status"].casefold()
+        item["inferred"] = "推定" in item["evidence"] or "inferred" in item["evidence"].casefold() or status in {"推定已乘坐", "inferred flown"}
+        item["flown"] = sheet.title in SHEETS["flights"] and status in FLOWN
+        item["excluded"] = sheet.title in SHEETS["canceled"] or status in {"不导入", "未乘坐", "暂不导入", "excluded", "not flown", "on hold", "canceled", "cancelled"}
         item["links"] = list(dict.fromkeys(safe_links(item["source"]) + safe_links(item["extraSources"])))
         item["sheet"] = sheet.title
         item["row"] = index
@@ -157,13 +163,19 @@ def parse_workbook(content):
     workbook = openpyxl.load_workbook(io.BytesIO(content), read_only=True, data_only=True)
     warnings = []
     try:
-        if "航班记录" not in workbook.sheetnames:
+        selected = {}
+        for role, aliases in SHEETS.items():
+            matches = [name for name in aliases if name in workbook.sheetnames]
+            if len(matches) > 1:
+                raise ValueError(f'Duplicate sheets for {role}. Keep one language per sheet.')
+            selected[role] = matches[0] if matches else None
+        if not selected["flights"]:
             raise ValueError("Excel 缺少「航班记录」工作表")
-        flights = read_flights(workbook["航班记录"], warnings)
-        canceled = read_flights(workbook["取消及旧票"], warnings) if "取消及旧票" in workbook.sheetnames else []
+        flights = read_flights(workbook[selected["flights"]], warnings)
+        canceled = read_flights(workbook[selected["canceled"]], warnings) if selected["canceled"] else []
         clues = []
-        if "待补充线索" in workbook.sheetnames:
-            for index, row in enumerate(workbook["待补充线索"].iter_rows(min_row=5, values_only=True), 5):
+        if selected["clues"]:
+            for index, row in enumerate(workbook[selected["clues"]].iter_rows(min_row=5, values_only=True), 5):
                 if len(row) > 4 and row[2]:
                     clues.append({"title": clean(row[2]), "detail": clean(row[3]), "context": clean(row[4]), "row": index})
         codes = {r[k] for r in flights + canceled for k in ("origin", "destination")}

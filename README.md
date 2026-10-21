@@ -2,11 +2,11 @@
 
 # ✈ Skyfolio · Flight Journal
 
-**Your flights, remembered. Your workbook, in control.**
+**Flight history, route maps and Excel sync.**
 
 An interactive flight journal powered by your local Excel workbook.
 
-**English** · [简体中文](README.zh-CN.md)
+**English** · [Chinese](README.zh-CN.md)
 
 [Live demo](https://zjlshuyu110.github.io/skyfolio/demo/?lang=en) · [Quick start](#quick-start) · [Publish the demo](#publish-the-demo)
 
@@ -14,9 +14,9 @@ An interactive flight journal powered by your local Excel workbook.
 
 ![English interface — entirely fictional journeys](docs/assets/demo-en.jpg)
 
-## A home for every flight
+## Features
 
-Turn spreadsheet rows into a route map, travel statistics and boarding-pass-style flight details. Keep editing your workbook; the journal follows along when you save.
+View your flights on a map, check travel statistics and look up booking details. Save changes in Excel to update the app.
 
 | Feature | What it does |
 | --- | --- |
@@ -54,34 +54,34 @@ python -m pip install -r requirements.txt
 python outputs/flight-journal/app.py --workbook "/absolute/path/to/flights.xlsx"
 ```
 
-Open **http://127.0.0.1:8765/**.
+Open **http://127.0.0.1:8765/?lang=en**.
 
-For the Windows launcher, edit `workbook` in `outputs/flight-journal/config.json`, then double-click **Start Flight Journal.cmd** (or **启动航迹.cmd**). Relative paths resolve from the configuration folder. Forward slashes work for Windows JSON paths.
+For the Windows launcher, edit `workbook` in `outputs/flight-journal/config.json`, then double-click **Start Flight Journal.cmd**. Relative paths resolve from the configuration folder. Forward slashes work for Windows JSON paths.
 
 The launcher reuses an existing Codex Python runtime or falls back to `python` on PATH. The bundled configuration points to the owner's private workbook folder, which is excluded from Git: a fresh clone needs your own workbook and path. **Open Excel** uses Windows file associations; on other platforms open the workbook manually.
 
 ### Workbook format
 
-Switching UI language does not change the schema. Keep these Chinese names exactly as written; headers can be reordered and must appear within the first 20 rows.
+Use the English sheet names and headers below. Chinese workbooks are also supported; see the [Chinese README](README.zh-CN.md) for that format. Interface and workbook languages are independent. Headers can be reordered and must appear within the first 20 rows. Do not include both language versions of the same sheet or column.
 
 | Sheet | Purpose |
 | --- | --- |
-| `航班记录` | Required main flight sheet. |
-| `取消及旧票` | Optional canceled/replaced tickets. |
-| `待补充线索` | Optional legacy notes: title/detail/context in columns C–E, from row 5. |
+| `Flights` | Required main flight sheet. |
+| `Canceled` | Optional canceled/replaced tickets. |
+| `Research notes` | Optional legacy notes: title/detail/context in columns C–E, from row 5. |
 
 | Headers | Meaning |
 | --- | --- |
-| `起飞日期` | Departure date, YYYY-MM-DD or Excel date; required for a row to appear. |
-| `航班号` | Flight number. |
-| `出发机场`, `到达机场` | Required headers. Values start with IATA codes, e.g. SFO San Francisco. |
-| `起飞时间`, `到达日期`, `到达时间` | Scheduled local departure time, arrival date and arrival time; HH:MM or Excel time. |
-| `航空公司`, `订单/预订号` | Airline and booking reference. |
-| `凭证状态`, `乘坐/导入判定` | Evidence description and flight status. |
-| `备注`, `来源邮箱`, `邮件日期` | Original notes and source metadata. |
-| `原邮件链接`, `补充来源链接` | HTTP(S) source URLs, one per line. |
+| `Departure date` | Departure date, YYYY-MM-DD or Excel date; required for a row to appear. |
+| `Flight number` | Flight number. |
+| `Origin`, `Destination` | Required headers. Values start with IATA codes, e.g. SFO San Francisco. |
+| `Departure time`, `Arrival date`, `Arrival time` | Scheduled local departure time, arrival date and arrival time; HH:MM or Excel time. |
+| `Airline`, `Booking reference` | Airline and booking reference. |
+| `Evidence`, `Status` | Evidence description and flight status. |
+| `Notes`, `Source mailbox`, `Email date` | Original notes and source metadata. |
+| `Source URL`, `Additional URLs` | HTTP(S) source URLs, one per line. |
 
-Statuses `已乘坐` (flown), `推定已乘坐` (inferred flown), and `已导入` (imported) count as flown. Canceled-sheet entries never count. Other statuses remain in the main list without contributing to flown totals. Original notes and evidence are not translated.
+Statuses `Flown`, `Inferred flown`, and `Imported` count as flown. Status matching ignores capitalization. `Excluded`, `Not flown`, `On hold` and `Canceled` do not count. Canceled-sheet entries never count. Other statuses remain in the main list without contributing to flown totals. Original notes and evidence are not translated.
 
 Invalid departure dates are skipped with a notice. Incomplete times omit duration; unknown airport codes omit their map positions and distance estimates. Enter the correct arrival date for overnight/date-line journeys.
 
