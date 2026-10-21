@@ -1,0 +1,15 @@
+# Private workbooks, email evidence, backups and personal previews
+/work/
+/outputs/flighty-history-20261007/
+/outputs/flight-journal/界面预览.jpg
+*.xlsx
+*.xls
+*.log
+*.pid
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+.env
+.env.*
+config.local.json
